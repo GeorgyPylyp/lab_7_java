@@ -290,14 +290,23 @@ public class lab7_task_2 {
     }
 
     private static void addHour(Scanner scanner, Hour.MetroStationDatabase metroStationDatabase) {
-        System.out.print("Назва станції: ");
-        String name = scanner.nextLine();
+        String name;
+        do {
+            System.out.print("Назва станції: ");
+            name = scanner.nextLine();
+        } while (!name.matches("[a-zA-Zа-яА-ЯіІїЇєЄ'\\s]+"));
 
-        System.out.print("Рік відкриття: ");
-        int yearOpened = Integer.parseInt(scanner.nextLine());
+        int yearOpened;
+        do {
+            System.out.print("Рік відкриття: ");
+            yearOpened = getIntInput(scanner);
+        } while (String.valueOf(yearOpened).length() != 4);
 
-        System.out.print("Кількість пасажирів: ");
-        int passengersCount = Integer.parseInt(scanner.nextLine());
+        int passengersCount;
+        do {
+            System.out.print("Кількість пасажирів: ");
+            passengersCount = getIntInput(scanner);
+        } while (passengersCount < 0);
 
         System.out.print("Коментарі: ");
         String comments = scanner.nextLine();
@@ -316,14 +325,23 @@ public class lab7_task_2 {
 
         Hour existingHour = metroStationDatabase.searchHourByName(name);
         if (existingHour != null) {
-            System.out.print("Нова назва станції: ");
-            String newName = scanner.nextLine();
+            String newName;
+            do {
+                System.out.print("Нова назва станції: ");
+                newName = scanner.nextLine();
+            } while (!newName.matches("[a-zA-Zа-яА-ЯіІїЇєЄ'\\s]+"));
 
-            System.out.print("Новий рік відкриття: ");
-            int newYearOpened = Integer.parseInt(scanner.nextLine());
+            int newYearOpened;
+            do {
+                System.out.print("Новий рік відкриття: ");
+                newYearOpened = getIntInput(scanner);
+            } while (String.valueOf(newYearOpened).length() != 4);
 
-            System.out.print("Нова кількість пасажирів: ");
-            int newPassengersCount = Integer.parseInt(scanner.nextLine());
+            int newPassengersCount;
+            do {
+                System.out.print("Нова кількість пасажирів: ");
+                newPassengersCount = getIntInput(scanner);
+            } while (newPassengersCount < 0);
 
             System.out.print("Нові коментарі: ");
             String newComments = scanner.nextLine();
@@ -338,6 +356,20 @@ public class lab7_task_2 {
             System.out.println("Станція з такою назвою не знайдена.");
         }
     }
+
+    private static int getIntInput(Scanner scanner) {
+        int input;
+        while (true) {
+            try {
+                input = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Помилка: введіть ціле число.");
+            }
+        }
+        return input;
+    }
+
 
     private static void deleteHour(Scanner scanner, Hour.MetroStationDatabase metroStationDatabase) {
         System.out.print("Введіть назву станції, яку потрібно видалити: ");
@@ -366,4 +398,3 @@ public class lab7_task_2 {
         metroStationDatabase.displayHours();
     }
 }
-
