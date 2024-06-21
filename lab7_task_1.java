@@ -242,10 +242,10 @@ public class lab7_task_1 {
             System.out.println("\nМеню:");
             System.out.println("1. Додати станцію");
             System.out.println("2. Редагувати станцію");
-            System.out.println("3. Видалити годину");
-            System.out.println("4. Показати всі години");
-            System.out.println("5. Пошук години за назвою станції");
-            System.out.println("6. Сортування годин");
+            System.out.println("3. Видалити станцію");
+            System.out.println("4. Показати всі станції");
+            System.out.println("5. Пошук станції за назвою ");
+            System.out.println("6. Сортування станцій");
             System.out.println("7. Загальна кількість пасажирів");
             System.out.println("8. Година з найменшою кількістю пасажирів");
             System.out.println("9. Година з найбільшою кількістю слів у коментарі");
@@ -291,14 +291,42 @@ public class lab7_task_1 {
     }
 
     private static void addHour(Scanner scanner, MetroStationDatabase metroStationDatabase) {
-        System.out.print("Назва станції: ");
-        String name = scanner.nextLine();
+        String name;
+        do {
+            System.out.print("Назва станції: ");
+            name = scanner.nextLine();
+            if (!name.matches("[a-zA-Zа-яА-ЯіІїЇєЄ'\\s]+")) {
+                System.out.println("Помилка: назва повинна містити тільки букви. Спробуйте ще раз.");
+            }
+        } while (!name.matches("[a-zA-Zа-яА-ЯіІїЇєЄ'\\s]+"));
 
-        System.out.print("Рік відкриття: ");
-        int yearOpened = Integer.parseInt(scanner.nextLine());
+        int yearOpened;
+        do {
+            System.out.print("Рік відкриття: ");
+            try {
+                yearOpened = Integer.parseInt(scanner.nextLine());
+                if (String.valueOf(yearOpened).length() != 4) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Помилка: рік повинний містити тільки 4 числа. Спробуйте ще раз.");
+                yearOpened = -1; // Set to invalid value to repeat the loop
+            }
+        } while (yearOpened == -1);
 
-        System.out.print("Кількість пасажирів: ");
-        int passengersCount = Integer.parseInt(scanner.nextLine());
+        int passengersCount;
+        do {
+            System.out.print("Кількість пасажирів: ");
+            try {
+                passengersCount = Integer.parseInt(scanner.nextLine());
+                if (passengersCount < 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Помилка: кількість пасажирів повинна бути не від'ємною. Спробуйте ще раз.");
+                passengersCount = -1; // Set to invalid value to repeat the loop
+            }
+        } while (passengersCount == -1);
 
         System.out.print("Коментарі: ");
         String comments = scanner.nextLine();
@@ -317,14 +345,42 @@ public class lab7_task_1 {
 
         Hour existingHour = metroStationDatabase.searchHourByName(name);
         if (existingHour != null) {
-            System.out.print("Нова назва станції: ");
-            String newName = scanner.nextLine();
+            String newName;
+            do {
+                System.out.print("Нова назва станції: ");
+                newName = scanner.nextLine();
+                if (!newName.matches("[a-zA-Zа-яА-ЯіІїЇєЄ'\\s]+")) {
+                    System.out.println("Помилка: назва повинна містити тільки букви. Спробуйте ще раз.");
+                }
+            } while (!newName.matches("[a-zA-Zа-яА-ЯіІїЇєЄ'\\s]+"));
 
-            System.out.print("Новий рік відкриття: ");
-            int newYearOpened = Integer.parseInt(scanner.nextLine());
+            int newYearOpened;
+            do {
+                System.out.print("Новий рік відкриття: ");
+                try {
+                    newYearOpened = Integer.parseInt(scanner.nextLine());
+                    if (String.valueOf(newYearOpened).length() != 4) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Помилка: рік повинний містити тільки 4 числа. Спробуйте ще раз.");
+                    newYearOpened = -1; // Set to invalid value to repeat the loop
+                }
+            } while (newYearOpened == -1);
 
-            System.out.print("Нова кількість пасажирів: ");
-            int newPassengersCount = Integer.parseInt(scanner.nextLine());
+            int newPassengersCount;
+            do {
+                System.out.print("Нова кількість пасажирів: ");
+                try {
+                    newPassengersCount = Integer.parseInt(scanner.nextLine());
+                    if (newPassengersCount < 0) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Помилка: кількість пасажирів повинна бути не від'ємною. Спробуйте ще раз.");
+                    newPassengersCount = -1; // Set to invalid value to repeat the loop
+                }
+            } while (newPassengersCount == -1);
 
             System.out.print("Нові коментарі: ");
             String newComments = scanner.nextLine();
@@ -339,6 +395,7 @@ public class lab7_task_1 {
             System.out.println("Станція з такою назвою не знайдена.");
         }
     }
+
 
     private static void deleteHour(Scanner scanner, MetroStationDatabase metroStationDatabase) {
         System.out.print("Введіть назву станції, яку потрібно видалити: ");
